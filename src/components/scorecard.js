@@ -193,59 +193,35 @@ function clearFieldError(field) {
     }
 }
 
-// Calculate and show expected handicap impact
-function showHandicapImpact() {
-    const scoreInput = document.getElementById('score-input');
-    const courseRatingInput = document.getElementById('course-rating');
-    const slopeRatingInput = document.getElementById('slope-rating');
-    
-    if (!scoreInput || !courseRatingInput || !slopeRatingInput) return;
-    
-    function updateImpact() {
-        const score = parseInt(scoreInput.value);
-        const courseRating = parseFloat(courseRatingInput.value);
-        const slopeRating = parseInt(slopeRatingInput.value);
-        
-        if (score && courseRating && slopeRating) {
-            const differential = ((score - courseRating) * 113) / slopeRating;
-            
-            let impactElement = document.querySelector('.handicap-impact');
-            if (!impactElement) {
-                impactElement = document.createElement('div');
-                impactElement.className = 'handicap-impact';
-                impactElement.style.cssText = `
-                    background: #f0f7ff;
-                    border: 1px solid #4CAF50;
-                    border-radius: 6px;
-                    padding: 0.75rem;
-                    margin-top: 1rem;
-                    font-size: 0.9rem;
-                `;
-                document.getElementById('score-form').appendChild(impactElement);
-            }
-            
-            impactElement.innerHTML = `
-                <strong>Score Analysis:</strong><br>
-                Differential: ${differential.toFixed(1)}<br>
-                <small style="color: #666;">
-                    ${differential < 0 ? '🎉 Great round! This will help your handicap.' : 
-                      differential < 10 ? '👍 Solid round!' : 
-                      '💪 Room for improvement!'}
-                </small>
-            `;
-        }
-    }
-    
-    [scoreInput, courseRatingInput, slopeRatingInput].forEach(input => {
-        input.addEventListener('input', updateImpact);
-    });
-}
-
 // Initialize scorecard enhancements
 function initScorecardEnhancements() {
+    // Clean up any leftover quick entry elements
+    cleanupQuickEntryElements();
     setupCourseAutocomplete();
     enhanceFormFields();
-    showHandicapImpact();
+}
+
+// Clean up any leftover quick entry elements from previous versions
+function cleanupQuickEntryElements() {
+    const elementsToRemove = [
+        '.quick-scores',
+        '.quick-score-buttons', 
+        '.quick-score-btn',
+        '.handicap-impact'
+    ];
+    
+    elementsToRemove.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(element => element.remove());
+    });
+    
+    // Also remove any elements containing "Quick Entry:" text
+    const allElements = document.querySelectorAll('*');
+    allElements.forEach(element => {
+        if (element.textContent && element.textContent.includes('Quick Entry:')) {
+            element.remove();
+        }
+    });
 }
 
 // Make functions available globally
@@ -254,5 +230,6 @@ window.ScorecardUtils = {
     initScorecardEnhancements,
     validateField,
     showFieldError,
-    clearFieldError
+    clearFieldError,
+    cleanupQuickEntryElements
 };
