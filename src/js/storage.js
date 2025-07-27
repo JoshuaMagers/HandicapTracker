@@ -1,5 +1,7 @@
 // Storage utilities for Golf Handicap Tracker
 const STORAGE_KEY = 'golfHandicapData';
+const BACKUP_KEY = 'golfHandicapBackup';
+const EMERGENCY_BACKUP_KEY = 'golfEmergencyBackup';
 
 // Initialize default data structure
 function getDefaultData() {
@@ -14,10 +16,79 @@ function getDefaultData() {
     };
 }
 
-// Save complete data
+// Create multiple backups for data protection
+function createBackups(data) {
+    try {
+        // Create regular backup
+        localStorage.setItem(BACKUP_KEY, JSON.stringify({
+            ...data,
+            backupTimestamp: Date.now(),
+            backupType: 'regular'
+        }));
+        
+        // Create emergency backup (only rounds data)
+        localStorage.setItem(EMERGENCY_BACKUP_KEY, JSON.stringify({
+            rounds: data.rounds,
+            timestamp: Date.now(),
+            backupType: 'emergency'
+        }));
+    } catch (error) {
+        console.error('Error creating backups:', error);
+    }
+}
+
+// Attempt to restore from backups if main data is lost
+function attemptDataRecovery() {
+    console.log('Attempting data recovery...');
+    
+    // Try regular backup first
+    try {
+        const backup = localStorage.getItem(BACKUP_KEY);
+        if (backup) {
+            const backupData = JSON.parse(backup);
+            if (backupData.rounds && backupData.rounds.length > 0) {
+                console.log(`Found backup with ${backupData.rounds.length} rounds`);
+                return backupData;
+            }
+        }
+    } catch (e) {
+        console.log('Regular backup failed');
+    }
+    
+    // Try emergency backup
+    try {
+        const emergencyBackup = localStorage.getItem(EMERGENCY_BACKUP_KEY);
+        if (emergencyBackup) {
+            const emergencyData = JSON.parse(emergencyBackup);
+            if (emergencyData.rounds && emergencyData.rounds.length > 0) {
+                console.log(`Found emergency backup with ${emergencyData.rounds.length} rounds`);
+                return {
+                    rounds: emergencyData.rounds,
+                    handicap: null,
+                    stats: {
+                        roundsPlayed: emergencyData.rounds.length,
+                        bestScore: Math.min(...emergencyData.rounds.map(r => r.score)),
+                        averageScore: emergencyData.rounds.reduce((sum, r) => sum + r.score, 0) / emergencyData.rounds.length
+                    }
+                };
+            }
+        }
+    } catch (e) {
+        console.log('Emergency backup failed');
+    }
+    
+    return null;
+}
+
+// Save complete data with automatic backups
 function saveData(data) {
     try {
+        // Save main data
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        
+        // Create backups
+        createBackups(data);
+        
         return true;
     } catch (error) {
         console.error('Error saving data:', error);
@@ -25,13 +96,41 @@ function saveData(data) {
     }
 }
 
-// Get all data
+// Get all data with automatic recovery
 function getData() {
     try {
         const data = localStorage.getItem(STORAGE_KEY);
-        return data ? JSON.parse(data) : getDefaultData();
+        if (data) {
+            const parsedData = JSON.parse(data);
+            // Ensure we have rounds array
+            if (parsedData && parsedData.rounds) {
+                return parsedData;
+            }
+        }
+        
+        // If main data is missing or invalid, try recovery
+        console.log('Main data missing or invalid, attempting recovery...');
+        const recoveredData = attemptDataRecovery();
+        
+        if (recoveredData) {
+            // Save recovered data as main data
+            saveData(recoveredData);
+            return recoveredData;
+        }
+        
+        // If no recovery possible, return default
+        return getDefaultData();
+        
     } catch (error) {
         console.error('Error loading data:', error);
+        
+        // Try recovery on error
+        const recoveredData = attemptDataRecovery();
+        if (recoveredData) {
+            saveData(recoveredData);
+            return recoveredData;
+        }
+        
         return getDefaultData();
     }
 }
