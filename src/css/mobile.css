@@ -4,7 +4,6 @@
 @media (max-width: 768px) {
     .container {
         padding: 0.75rem;
-    }
     
     header {
         padding: 0.75rem 0;
@@ -50,21 +49,6 @@
         font-size: 1rem;
     }
     
-    /* Mobile quick tips */
-    .quick-tips {
-        margin-top: 1rem;
-        padding: 0.75rem;
-    }
-    
-    .quick-tips h3 {
-        font-size: 0.95rem;
-    }
-    
-    .quick-tips li {
-        font-size: 0.85rem;
-        margin-bottom: 0.4rem;
-    }
-    
     .round-item {
         padding: 0.75rem;
     }
@@ -87,14 +71,6 @@
     .round-actions button {
         font-size: 0.75rem;
         padding: 0.4rem 0.6rem;
-    }
-    
-    .fab {
-        bottom: 1rem;
-        right: 1rem;
-        width: 48px;
-        height: 48px;
-        font-size: 1.2rem;
     }
     
     .header-stats small {

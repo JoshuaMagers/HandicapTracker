@@ -32,7 +32,6 @@ Visit the live demo: [Golf Handicap Tracker](https://joshuamagers.github.io/Hand
 - **🌙 Dark Mode**: Automatic dark mode support
 - **📊 Statistics**: View trends and track your improvement
 - **⌨️ Keyboard Shortcuts**: Press Escape to close modals
-- **🎯 Quick Entry**: Floating action button and quick score buttons
 
 ## 🚀 Getting Started
 
@@ -61,8 +60,7 @@ npm start
 ### Adding a Round
 1. Fill in the course name, date, and your score
 2. Adjust course rating and slope rating if needed (defaults to par 72, slope 113)
-3. Use the quick score buttons for common scores
-4. Tap "Add Round" to save
+3. Tap "Add Round" to save
 
 ### Understanding Your Handicap
 - Your handicap is calculated using a simplified USGA method
@@ -79,7 +77,6 @@ npm start
   - 🗑️ **Delete**: Tap "Delete" or swipe left on mobile to remove rounds
 - **Smart Sorting**: Sort rounds by newest/oldest/best/worst scores
 - **Trends**: See if your game is improving
-- **Quick Entry**: Floating + button and quick score buttons for common scores
 - **Auto-complete**: Course names are remembered for easy re-entry
 - **Keyboard Shortcuts**: Press Escape to close modals
 

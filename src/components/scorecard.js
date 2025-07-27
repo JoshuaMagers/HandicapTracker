@@ -193,65 +193,6 @@ function clearFieldError(field) {
     }
 }
 
-// Quick score entry buttons
-function addQuickScoreButtons() {
-    const scoreInput = document.getElementById('score-input');
-    if (!scoreInput) return;
-    
-    const quickScoresContainer = document.createElement('div');
-    quickScoresContainer.className = 'quick-scores';
-    quickScoresContainer.innerHTML = `
-        <label style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem; display: block;">Quick Entry:</label>
-        <div class="quick-score-buttons">
-            <button type="button" class="quick-score-btn" data-score="72">Par</button>
-            <button type="button" class="quick-score-btn" data-score="80">80</button>
-            <button type="button" class="quick-score-btn" data-score="85">85</button>
-            <button type="button" class="quick-score-btn" data-score="90">90</button>
-            <button type="button" class="quick-score-btn" data-score="95">95</button>
-            <button type="button" class="quick-score-btn" data-score="100">100</button>
-        </div>
-    `;
-    
-    quickScoresContainer.style.cssText = `
-        margin-top: 0.5rem;
-    `;
-    
-    const quickScoreButtons = quickScoresContainer.querySelectorAll('.quick-score-btn');
-    quickScoreButtons.forEach(btn => {
-        btn.style.cssText = `
-            background: #f8f9fa;
-            border: 1px solid #e1e5e9;
-            color: #333;
-            padding: 0.5rem 0.75rem;
-            margin: 0 0.25rem 0.25rem 0;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-        `;
-        
-        btn.addEventListener('click', function() {
-            scoreInput.value = this.dataset.score;
-            scoreInput.focus();
-            clearFieldError(scoreInput);
-        });
-        
-        btn.addEventListener('mouseenter', function() {
-            this.style.background = '#4CAF50';
-            this.style.color = 'white';
-            this.style.borderColor = '#4CAF50';
-        });
-        
-        btn.addEventListener('mouseleave', function() {
-            this.style.background = '#f8f9fa';
-            this.style.color = '#333';
-            this.style.borderColor = '#e1e5e9';
-        });
-    });
-    
-    scoreInput.parentNode.appendChild(quickScoresContainer);
-}
-
 // Calculate and show expected handicap impact
 function showHandicapImpact() {
     const scoreInput = document.getElementById('score-input');
@@ -304,7 +245,6 @@ function showHandicapImpact() {
 function initScorecardEnhancements() {
     setupCourseAutocomplete();
     enhanceFormFields();
-    addQuickScoreButtons();
     showHandicapImpact();
 }
 

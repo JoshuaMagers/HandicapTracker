@@ -161,24 +161,6 @@ function updateHeaderStats(handicap, stats) {
     headerStats.innerHTML = `<small>${handicapText} • ${roundsText}</small>`;
 }
 
-function scrollToForm() {
-    const scorecard = document.getElementById('scorecard');
-    if (scorecard) {
-        scorecard.scrollIntoView({ 
-            behavior: 'smooth',
-            block: 'start'
-        });
-        
-        // Focus on the first input
-        setTimeout(() => {
-            const firstInput = scorecard.querySelector('input');
-            if (firstInput) {
-                firstInput.focus();
-            }
-        }, 500);
-    }
-}
-
 function toggleAdvanced() {
     const checkbox = document.getElementById('show-advanced');
     const slopeField = document.getElementById('slope-field');
@@ -602,7 +584,6 @@ window.editRound = editRound;
 window.saveEditedRound = saveEditedRound;
 window.closeModal = closeModal;
 window.handleSortChange = handleSortChange;
-window.scrollToForm = scrollToForm;
 window.toggleAdvanced = toggleAdvanced;
 
 // Demo data function for testing (can be removed in production)
