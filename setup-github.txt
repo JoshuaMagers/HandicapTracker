@@ -20,11 +20,10 @@ git add .
 git commit -m "Initial commit: Golf Handicap Tracker PWA"
 
 # Step 7: Add your GitHub repository as remote 
-# REPLACE 'YourUsername' with your actual GitHub username!
-git remote add origin https://github.com/YourUsername/golf-handicap-tracker.git
+git remote add origin https://github.com/JoshuaMagers/HandicapTracker.git
 
 # Step 8: Push to GitHub
 git push -u origin main
 
 # That's it! Your app will be live at:
-# https://YourUsername.github.io/golf-handicap-tracker/
+# https://JoshuaMagers.github.io/HandicapTracker/

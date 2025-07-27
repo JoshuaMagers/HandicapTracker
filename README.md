@@ -6,7 +6,7 @@ A mobile-friendly Progressive Web App for tracking your golf scores and calculat
 
 ## 🌟 Live Demo
 
-Visit the live demo: [Golf Handicap Tracker](https://yourusername.github.io/golf-handicap-tracker/src/)
+Visit the live demo: [Golf Handicap Tracker](https://joshuamagers.github.io/HandicapTracker/)
 
 ## 📋 Table of Contents
 
