@@ -1,0 +1,303 @@
+/* Mobile-specific styles for Golf Handicap Tracker */
+
+/* Base mobile optimizations */
+@media (max-width: 768px) {
+    .container {
+        padding: 0.75rem;
+    }
+    
+    header {
+        padding: 0.75rem 0;
+    }
+    
+    h1 {
+        font-size: 1.25rem;
+    }
+    
+    h2 {
+        font-size: 1.1rem;
+    }
+    
+    .dashboard, .scorecard, .recent-rounds {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+    
+    .stat-card {
+        padding: 0.75rem;
+    }
+    
+    .handicap-value {
+        font-size: 1.75rem;
+    }
+    
+    .stat-value {
+        font-size: 1.25rem;
+    }
+    
+    .form-group input {
+        padding: 0.75rem;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    button, .btn-primary {
+        padding: 0.875rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    /* Mobile quick tips */
+    .quick-tips {
+        margin-top: 1rem;
+        padding: 0.75rem;
+    }
+    
+    .quick-tips h3 {
+        font-size: 0.95rem;
+    }
+    
+    .quick-tips li {
+        font-size: 0.85rem;
+        margin-bottom: 0.4rem;
+    }
+    
+    .round-item {
+        padding: 0.75rem;
+    }
+    
+    .round-item-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+    
+    .round-score {
+        font-size: 1.1rem;
+    }
+    
+    .round-actions {
+        gap: 0.25rem;
+        margin-top: 0.5rem;
+    }
+    
+    .round-actions button {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.6rem;
+    }
+    
+    .fab {
+        bottom: 1rem;
+        right: 1rem;
+        width: 48px;
+        height: 48px;
+        font-size: 1.2rem;
+    }
+    
+    .header-stats small {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 500;
+    }
+    
+    /* Modal adjustments for mobile */
+    .modal-overlay {
+        padding: 0.5rem;
+        align-items: flex-start;
+        padding-top: 2rem;
+    }
+    
+    .modal-content {
+        max-height: 85vh;
+    }
+    
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding: 1rem;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .modal-footer .btn-primary,
+    .modal-footer .btn-secondary {
+        width: 100%;
+    }
+    
+    .round-detail-grid {
+        gap: 0.75rem;
+    }
+    
+    .detail-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+        padding: 0.5rem;
+    }
+}
+
+/* Small mobile phones */
+@media (max-width: 480px) {
+    .container {
+        padding: 0.5rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+    
+    .stat-card {
+        padding: 0.5rem;
+    }
+    
+    .dashboard, .scorecard, .recent-rounds {
+        padding: 0.75rem;
+        border-radius: 8px;
+    }
+    
+    .form-group {
+        margin-bottom: 0.75rem;
+    }
+    
+    .round-item {
+        padding: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+    button, .btn-primary {
+        min-height: 44px; /* Apple's recommended touch target size */
+    }
+    
+    .form-group input {
+        min-height: 44px;
+    }
+    
+    .stat-card {
+        min-height: 80px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}
+
+/* Landscape orientation on mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .container {
+        padding: 0.5rem;
+    }
+    
+    .dashboard, .scorecard, .recent-rounds {
+        padding: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1a1a1a;
+        color: #ffffff;
+    }
+    
+    .dashboard, .scorecard, .recent-rounds {
+        background: #2d2d2d;
+        color: #ffffff;
+    }
+    
+    .stat-card, .round-item {
+        background: #3a3a3a;
+        border-color: #4a5568;
+    }
+    
+    .stat-value, .handicap-value {
+        color: #ffffff !important;
+    }
+    
+    .round-course {
+        color: #ffffff;
+    }
+    
+    .round-score {
+        color: #4CAF50 !important;
+    }
+    
+    .form-group input {
+        background: #3a3a3a;
+        border-color: #4a5568;
+        color: #ffffff;
+    }
+    
+    .form-group label {
+        color: #ffffff;
+    }
+    
+    .sort-select {
+        background: #3a3a3a;
+        border-color: #4a5568;
+        color: #ffffff;
+    }
+    
+    .modal-content {
+        background: #2d2d2d;
+        color: #ffffff;
+    }
+    
+    .detail-item {
+        background: #3a3a3a;
+        border-color: #4a5568;
+    }
+    
+    .detail-item label {
+        color: #cbd5e0;
+    }
+    
+    .detail-item span {
+        color: #ffffff;
+    }
+    
+    .form-group input:focus {
+        border-color: #4CAF50;
+    }
+    
+    .round-details {
+        color: #cbd5e0;
+    }
+    
+    h2, .stat-card h3 {
+        color: #ffffff;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .stat-card, .round-item {
+        border: 2px solid #333;
+    }
+    
+    .form-group input {
+        border-width: 2px;
+    }
+}
+
+    .score-input {
+        width: 100%;
+    }
+
+    .button {
+        width: 100%;
+    }
+}

@@ -1,0 +1,30 @@
+# Git Setup Commands for Golf Handicap Tracker (PowerShell)
+
+# Step 1: Navigate to your project directory
+Set-Location "c:\Users\joshm\OneDrive\Documents\Python Scripts\golf-handicap-tracker"
+
+# Step 2: Initialize git repository
+git init
+
+# Step 3: Configure git (REPLACE WITH YOUR ACTUAL INFO!)
+git config user.name "Your Real Name"
+git config user.email "your.email@gmail.com"
+
+# Step 4: Set main as default branch
+git branch -M main
+
+# Step 5: Add all files
+git add .
+
+# Step 6: Make first commit
+git commit -m "Initial commit: Golf Handicap Tracker PWA"
+
+# Step 7: Add your GitHub repository as remote 
+# REPLACE 'YourUsername' with your actual GitHub username!
+git remote add origin https://github.com/YourUsername/golf-handicap-tracker.git
+
+# Step 8: Push to GitHub
+git push -u origin main
+
+# That's it! Your app will be live at:
+# https://YourUsername.github.io/golf-handicap-tracker/
