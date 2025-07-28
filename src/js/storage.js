@@ -158,7 +158,16 @@ function saveRound(roundData) {
     // Update stats
     updateStats(data);
     
-    return saveData(data) ? round : null;
+    const success = saveData(data);
+    
+    // Sync to cloud if user is authenticated
+    if (success && window.CloudSync && window.GolfAuth && window.GolfAuth.isAuthenticated()) {
+        window.CloudSync.syncUserData().catch(error => {
+            console.error('Failed to sync new round to cloud:', error);
+        });
+    }
+    
+    return success ? round : null;
 }
 
 // Update statistics
@@ -226,7 +235,16 @@ function deleteRound(roundId) {
     const data = getData();
     data.rounds = data.rounds.filter(round => round.id !== roundId);
     updateStats(data);
-    return saveData(data);
+    const success = saveData(data);
+    
+    // Sync to cloud if user is authenticated
+    if (success && window.CloudSync && window.GolfAuth && window.GolfAuth.isAuthenticated()) {
+        window.CloudSync.syncUserData().catch(error => {
+            console.error('Failed to sync round deletion to cloud:', error);
+        });
+    }
+    
+    return success;
 }
 
 // Update an existing round
@@ -254,7 +272,16 @@ function updateRound(roundId, updatedRoundData) {
     // Update stats
     updateStats(data);
     
-    return saveData(data);
+    const success = saveData(data);
+    
+    // Sync to cloud if user is authenticated
+    if (success && window.CloudSync && window.GolfAuth && window.GolfAuth.isAuthenticated()) {
+        window.CloudSync.syncUserData().catch(error => {
+            console.error('Failed to sync round update to cloud:', error);
+        });
+    }
+    
+    return success;
 }
 
 // Clear all data
@@ -272,5 +299,6 @@ window.GolfStorage = {
     deleteRound,
     updateRound,
     clearAllData,
-    getData
+    getData,
+    saveData  // Add saveData for cloud sync
 };

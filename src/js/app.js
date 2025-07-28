@@ -20,7 +20,31 @@ function registerServiceWorker() {
     }
 }
 
-function initApp() {
+async function initApp() {
+    console.log('🏌️ Golf Handicap Tracker initializing...');
+    
+    // Initialize authentication first
+    if (window.GolfAuth) {
+        window.GolfAuth.initAuth();
+    }
+    
+    // Initialize cloud sync
+    if (window.CloudSync) {
+        window.CloudSync.initCloudSync();
+    }
+    
+    // Wait a moment for auth state to be determined
+    setTimeout(() => {
+        // Only initialize app features if user is authenticated
+        if (window.GolfAuth && window.GolfAuth.isAuthenticated()) {
+            initAppFeatures();
+        }
+    }, 1000);
+    
+    console.log('💡 Try: addDemoData() to add sample rounds for testing');
+}
+
+function initAppFeatures() {
     setupEventListeners();
     updateDashboard();
     displayRecentRounds();
@@ -36,9 +60,19 @@ function initApp() {
         window.DashboardUtils.addTrendIndicators();
     }
     
-    // Console info for developers
-    console.log('🏌️ Golf Handicap Tracker initialized!');
-    console.log('💡 Try: addDemoData() to add sample rounds for testing');
+    // Load user data from cloud
+    if (window.CloudSync) {
+        window.CloudSync.loadUserData().then(() => {
+            // Refresh UI after loading cloud data
+            updateDashboard();
+            displayRecentRounds();
+            
+            // Start real-time sync
+            window.CloudSync.startRealtimeSync();
+        });
+    }
+    
+    console.log('🏌️ Golf Handicap Tracker app features initialized!');
 }
 
 function setupEventListeners() {
