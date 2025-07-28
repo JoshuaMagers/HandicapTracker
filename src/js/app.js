@@ -32,12 +32,8 @@ async function initApp() {
     await initCloudSync();
     
     // Wait a moment for auth state to be determined
-    setTimeout(() => {
-        // Only initialize app features if user is authenticated
-        if (isAuthenticated()) {
-            initAppFeatures();
-        }
-    }, 1000);
+    // Note: App features will be initialized by auth state change handler
+    // after cloud data is loaded
     
     console.log('💡 Try: addDemoData() to add sample rounds for testing');
 }
@@ -58,20 +54,11 @@ function initAppFeatures() {
         window.DashboardUtils.addTrendIndicators();
     }
     
-    // Load user data from cloud
-    if (window.CloudSync) {
-        window.CloudSync.loadUserData().then(() => {
-            // Refresh UI after loading cloud data
-            updateDashboard();
-            displayRecentRounds();
-            
-            // Start real-time sync
-            window.CloudSync.startRealtimeSync();
-        });
-    }
-    
     console.log('🏌️ Golf Handicap Tracker app features initialized!');
 }
+
+// Make initAppFeatures available globally for auth module
+window.initAppFeatures = initAppFeatures;
 
 function setupEventListeners() {
     const scoreForm = document.getElementById('score-form');

@@ -21,9 +21,25 @@ export function initAuth() {
         
         if (user) {
             console.log('User signed in:', user.email);
-            // Sync data when user signs in
+            // Load data from cloud first, then start real-time sync
             if (window.CloudSync) {
-                window.CloudSync.syncUserData();
+                // Load existing cloud data first
+                window.CloudSync.loadUserData().then((result) => {
+                    // Start real-time synchronization
+                    window.CloudSync.startRealtimeSync();
+                    
+                    // Initialize app features after data is loaded
+                    if (window.initAppFeatures) {
+                        setTimeout(window.initAppFeatures, 200);
+                    }
+                });
+            } else {
+                // Fallback if CloudSync is not available yet
+                setTimeout(() => {
+                    if (window.initAppFeatures) {
+                        window.initAppFeatures();
+                    }
+                }, 500);
             }
         } else {
             console.log('User signed out');

@@ -83,7 +83,7 @@ export async function syncUserData() {
 
 // Load user data from cloud
 export async function loadUserData() {
-    if (!!isAuthenticated()) {
+    if (!isAuthenticated()) {
         console.log('User not authenticated, skipping load');
         return { success: false, error: 'Not authenticated' };
     }
@@ -107,13 +107,15 @@ export async function loadUserData() {
                 window.GolfStorage.saveData(mergedData);
             }
             
-            // Refresh UI
-            if (window.updateDashboard) {
-                window.updateDashboard();
-            }
-            if (window.displayRecentRounds) {
-                window.displayRecentRounds();
-            }
+            // Refresh UI components
+            setTimeout(() => {
+                if (window.updateDashboard) {
+                    window.updateDashboard();
+                }
+                if (window.displayRecentRounds) {
+                    window.displayRecentRounds();
+                }
+            }, 100);
             
             updateSyncStatus('synced');
             console.log('Data loaded from cloud successfully');
@@ -133,7 +135,7 @@ export async function loadUserData() {
 
 // Set up real-time listener for data changes
 export function startRealtimeSync() {
-    if (!!isAuthenticated()) {
+    if (!isAuthenticated()) {
         return;
     }
     
