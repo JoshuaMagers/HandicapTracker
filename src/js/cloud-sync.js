@@ -15,6 +15,8 @@ import {
 let syncInProgress = false;
 let lastSyncTime = null;
 let unsubscribeListener = null;
+let lastUIUpdateTime = 0;
+const UI_UPDATE_THROTTLE = 1000; // Minimum 1 second between UI updates
 
 // Initialize cloud sync
 export function initCloudSync() {
@@ -107,16 +109,6 @@ export async function loadUserData() {
                 window.GolfStorage.saveData(mergedData);
             }
             
-            // Refresh UI components
-            setTimeout(() => {
-                if (window.updateDashboard) {
-                    window.updateDashboard();
-                }
-                if (window.displayRecentRounds) {
-                    window.displayRecentRounds();
-                }
-            }, 100);
-            
             updateSyncStatus('synced');
             console.log('Data loaded from cloud successfully');
             return { success: true, data: mergedData };
@@ -163,15 +155,21 @@ export function startRealtimeSync() {
                     window.GolfStorage.saveData(mergedData);
                 }
                 
-                // Refresh UI
-                if (window.updateDashboard) {
-                    window.updateDashboard();
+                // Throttle UI updates to prevent too many rapid refreshes
+                const now = Date.now();
+                if (now - lastUIUpdateTime > UI_UPDATE_THROTTLE) {
+                    lastUIUpdateTime = now;
+                    
+                    // Refresh UI
+                    if (window.updateDashboard) {
+                        window.updateDashboard();
+                    }
+                    if (window.displayRecentRounds) {
+                        window.displayRecentRounds();
+                    }
+                    
+                    showSyncNotification('Data updated from another device');
                 }
-                if (window.displayRecentRounds) {
-                    window.displayRecentRounds();
-                }
-                
-                showSyncNotification('Data updated from another device');
             }
         }
     }, (error) => {

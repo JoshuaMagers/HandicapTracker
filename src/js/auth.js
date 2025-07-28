@@ -30,7 +30,7 @@ export function initAuth() {
                     
                     // Initialize app features after data is loaded
                     if (window.initAppFeatures) {
-                        setTimeout(window.initAppFeatures, 200);
+                        setTimeout(window.initAppFeatures, 300);
                     }
                 });
             } else {

@@ -38,7 +38,17 @@ async function initApp() {
     console.log('💡 Try: addDemoData() to add sample rounds for testing');
 }
 
+// Track if app features have been initialized to prevent duplicate calls
+let appFeaturesInitialized = false;
+
 function initAppFeatures() {
+    if (appFeaturesInitialized) {
+        console.log('App features already initialized, skipping...');
+        return;
+    }
+    
+    appFeaturesInitialized = true;
+    
     setupEventListeners();
     updateDashboard();
     displayRecentRounds();
@@ -60,7 +70,17 @@ function initAppFeatures() {
 // Make initAppFeatures available globally for auth module
 window.initAppFeatures = initAppFeatures;
 
+// Track if event listeners have been set up
+let eventListenersSetup = false;
+
 function setupEventListeners() {
+    if (eventListenersSetup) {
+        console.log('Event listeners already set up, skipping...');
+        return;
+    }
+    
+    eventListenersSetup = true;
+    
     const scoreForm = document.getElementById('score-form');
     if (scoreForm) {
         scoreForm.addEventListener('submit', handleScoreSubmit);
