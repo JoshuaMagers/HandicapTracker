@@ -774,13 +774,20 @@ footer {
     }
     
     .form-group label {
-        color: #ffffff;
+        color: #ffffff !important;
+        font-weight: 600;
     }
     
     .form-group input {
         background: #3a3a3a;
         border-color: #4a5568;
         color: #ffffff;
+    }
+    
+    .form-group input[type="date"] {
+        background: #3a3a3a;
+        color: #ffffff;
+        color-scheme: dark;
     }
     
     .form-group input:focus {
