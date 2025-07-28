@@ -788,12 +788,43 @@ footer {
         background: #4a5568;
     }
     
+    .form-group input::placeholder {
+        color: #a0aec0;
+    }
+    
     .sort-select {
         background: #3a3a3a;
         border-color: #4a5568;
         color: #ffffff;
     }
     
+    .advanced-toggle {
+        background: #3a3a3a;
+        border-color: #4a5568;
+    }
+    
+    .toggle-label {
+        color: #ffffff;
+    }
+    
+    .advanced-field {
+        background: #2d2d2d;
+        border-left-color: #4CAF50;
+    }
+    
+    .help-text {
+        color: #cbd5e0;
+    }
+    
+    .toggle-help {
+        background: #2d4a2d;
+        border-left-color: #4CAF50;
+    }
+    
+    .toggle-help small {
+        color: #81c784;
+    }
+
     .modal-content {
         background: #2d2d2d;
         color: #ffffff;
