@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug - Golf Handicap Tracker</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .warning { background: #fff3cd; color: #856404; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        button { padding: 10px 20px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Debug Golf Handicap Tracker</h1>
+    
+    <div id="status"></div>
+    
+    <h2>Tests</h2>
+    <button onclick="testBasics()">Test Basics</button>
+    <button onclick="testFirebase()">Test Firebase</button>
+    <button onclick="testAuth()">Test Authentication</button>
+    <button onclick="clearResults()">Clear Results</button>
+    
+    <div id="results"></div>
+    
+    <h2>Quick Setup Links</h2>
+    <ul>
+        <li><a href="https://console.firebase.google.com/project/handicaptracker-65a8d/authentication/providers" target="_blank">Enable Authentication</a></li>
+        <li><a href="https://console.firebase.google.com/project/handicaptracker-65a8d/firestore" target="_blank">Create Firestore Database</a></li>
+        <li><a href="http://localhost:8080" target="_blank">Main App</a></li>
+        <li><a href="http://localhost:8080/firebase-test.html" target="_blank">Firebase Test</a></li>
+    </ul>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyACW37rtM_pLKqRl-dTiy87llbezzcNwA8",
+            authDomain: "handicaptracker-65a8d.firebaseapp.com",
+            projectId: "handicaptracker-65a8d",
+            storageBucket: "handicaptracker-65a8d.firebasestorage.app",
+            messagingSenderId: "420060832386",
+            appId: "1:420060832386:web:f03e2d6b47ff72ad704a9b",
+            measurementId: "G-5QRQB0MD40"
+        };
+
+        let app, auth, db;
+        
+        function log(message, type = 'info') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `status ${type}`;
+            div.innerHTML = message;
+            results.appendChild(div);
+        }
+        
+        window.clearResults = function() {
+            document.getElementById('results').innerHTML = '';
+        }
+        
+        window.testBasics = function() {
+            log('🔍 Testing basic functionality...');
+            
+            // Test if we can access the DOM elements
+            const authContainer = document.querySelector('#auth-container');
+            const signUpForm = document.querySelector('#sign-up-form');
+            
+            if (!authContainer) {
+                log('❌ Main app DOM elements not accessible from this page', 'error');
+            } else {
+                log('✅ Can access main app DOM', 'success');
+            }
+            
+            log(`📍 Current URL: ${window.location.href}`);
+            log(`🌐 Online status: ${navigator.onLine ? 'Online' : 'Offline'}`);
+            log(`🔧 User agent: ${navigator.userAgent}`);
+        }
+        
+        window.testFirebase = function() {
+            log('🔥 Testing Firebase initialization...');
+            
+            try {
+                app = initializeApp(firebaseConfig);
+                log('✅ Firebase app initialized', 'success');
+                
+                auth = getAuth(app);
+                log('✅ Firebase Auth initialized', 'success');
+                
+                db = getFirestore(app);
+                log('✅ Firestore initialized', 'success');
+                
+                log(`📋 Project ID: ${firebaseConfig.projectId}`, 'info');
+                
+            } catch (error) {
+                log(`❌ Firebase initialization failed: ${error.message}`, 'error');
+                log(`💡 Error details: ${error.code}`, 'warning');
+            }
+        }
+        
+        window.testAuth = async function() {
+            log('👤 Testing authentication...');
+            
+            if (!auth) {
+                log('❌ Auth not initialized. Run Firebase test first.', 'error');
+                return;
+            }
+            
+            // Test with a dummy email that should fail gracefully
+            const testEmail = 'test@example.com';
+            const testPassword = 'testpass123';
+            
+            try {
+                log(`🧪 Attempting to create test account: ${testEmail}`);
+                const userCredential = await createUserWithEmailAndPassword(auth, testEmail, testPassword);
+                log('✅ Test account creation succeeded! (This means Firebase Auth is working)', 'success');
+                log('🗑️ You can delete this test account from Firebase Console', 'info');
+            } catch (error) {
+                if (error.code === 'auth/email-already-in-use') {
+                    log('✅ Firebase Auth is working (test email already exists)', 'success');
+                } else if (error.code === 'auth/operation-not-allowed') {
+                    log('❌ Email/Password authentication is not enabled in Firebase Console', 'error');
+                    log('👉 Go to Firebase Console → Authentication → Sign-in method → Enable Email/Password', 'warning');
+                } else {
+                    log(`❌ Auth test failed: ${error.message}`, 'error');
+                    log(`💡 Error code: ${error.code}`, 'warning');
+                }
+            }
+        }
+        
+        // Auto-run basic tests
+        setTimeout(() => {
+            testBasics();
+            testFirebase();
+        }, 500);
+    </script>
+</body>
+</html>
