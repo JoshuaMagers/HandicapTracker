@@ -1,7 +1,7 @@
 // Cloud synchronization module for Golf Handicap Tracker
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { db } from './firebase-config.js';
+import { isAuthenticated, getCurrentUser } from './auth.js';
 import { 
-    getFirestore, 
     doc, 
     setDoc, 
     getDoc, 
@@ -10,28 +10,6 @@ import {
     enableNetwork,
     disableNetwork
 } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-
-// Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyACW37rtM_pLKqRl-dTiy87llbezzcNwA8",
-    authDomain: "handicaptracker-65a8d.firebaseapp.com",
-    projectId: "handicaptracker-65a8d",
-    storageBucket: "handicaptracker-65a8d.firebasestorage.app",
-    messagingSenderId: "420060832386",
-    appId: "1:420060832386:web:f03e2d6b47ff72ad704a9b",
-    measurementId: "G-5QRQB0MD40"
-};
-
-// Initialize Firebase (if not already initialized)
-let app;
-try {
-    app = initializeApp(firebaseConfig);
-} catch (error) {
-    // App already initialized
-    app = initializeApp(firebaseConfig, 'cloud-sync');
-}
-
-const db = getFirestore(app);
 
 // Sync status
 let syncInProgress = false;
@@ -51,7 +29,7 @@ export function initCloudSync() {
     
     // Auto-sync every 5 minutes when online
     setInterval(() => {
-        if (navigator.onLine && window.GolfAuth && window.GolfAuth.isAuthenticated()) {
+        if (navigator.onLine && isAuthenticated()) {
             syncUserData();
         }
     }, 5 * 60 * 1000);
@@ -59,7 +37,7 @@ export function initCloudSync() {
 
 // Sync user data to cloud
 export async function syncUserData() {
-    if (!window.GolfAuth || !window.GolfAuth.isAuthenticated()) {
+    if (!isAuthenticated()) {
         console.log('User not authenticated, skipping sync');
         return { success: false, error: 'Not authenticated' };
     }
@@ -73,7 +51,7 @@ export async function syncUserData() {
         syncInProgress = true;
         updateSyncStatus('syncing');
         
-        const user = window.GolfAuth.getCurrentUser();
+        const user = getCurrentUser();
         const localData = window.GolfStorage.getData();
         
         // Prepare data for cloud storage
@@ -105,7 +83,7 @@ export async function syncUserData() {
 
 // Load user data from cloud
 export async function loadUserData() {
-    if (!window.GolfAuth || !window.GolfAuth.isAuthenticated()) {
+    if (!!isAuthenticated()) {
         console.log('User not authenticated, skipping load');
         return { success: false, error: 'Not authenticated' };
     }
@@ -113,7 +91,7 @@ export async function loadUserData() {
     try {
         updateSyncStatus('syncing');
         
-        const user = window.GolfAuth.getCurrentUser();
+        const user = getCurrentUser();
         const userDocRef = doc(db, 'golf-data', user.uid);
         const docSnap = await getDoc(userDocRef);
         
@@ -155,11 +133,11 @@ export async function loadUserData() {
 
 // Set up real-time listener for data changes
 export function startRealtimeSync() {
-    if (!window.GolfAuth || !window.GolfAuth.isAuthenticated()) {
+    if (!!isAuthenticated()) {
         return;
     }
     
-    const user = window.GolfAuth.getCurrentUser();
+    const user = getCurrentUser();
     const userDocRef = doc(db, 'golf-data', user.uid);
     
     // Clean up existing listener
@@ -268,7 +246,7 @@ function handleOnline() {
     console.log('Device came online');
     updateSyncStatus('online');
     
-    if (window.GolfAuth && window.GolfAuth.isAuthenticated()) {
+    if (isAuthenticated()) {
         // Sync data when coming back online
         setTimeout(() => {
             syncUserData();

@@ -1,7 +1,6 @@
 // Authentication module for Golf Handicap Tracker
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { auth } from './firebase-config.js';
 import { 
-    getAuth, 
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
     signOut, 
@@ -9,21 +8,6 @@ import {
     updateProfile,
     sendPasswordResetEmail
 } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-
-// Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyACW37rtM_pLKqRl-dTiy87llbezzcNwA8",
-    authDomain: "handicaptracker-65a8d.firebaseapp.com",
-    projectId: "handicaptracker-65a8d",
-    storageBucket: "handicaptracker-65a8d.firebasestorage.app",
-    messagingSenderId: "420060832386",
-    appId: "1:420060832386:web:f03e2d6b47ff72ad704a9b",
-    measurementId: "G-5QRQB0MD40"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 
 // Current user state
 let currentUser = null;

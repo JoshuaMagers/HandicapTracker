@@ -1,4 +1,6 @@
 // Golf Handicap Tracker - Main Application Logic
+import { initAuth, isAuthenticated } from './auth.js';
+import { initCloudSync } from './cloud-sync.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     initApp();
@@ -24,19 +26,15 @@ async function initApp() {
     console.log('🏌️ Golf Handicap Tracker initializing...');
     
     // Initialize authentication first
-    if (window.GolfAuth) {
-        window.GolfAuth.initAuth();
-    }
+    await initAuth();
     
     // Initialize cloud sync
-    if (window.CloudSync) {
-        window.CloudSync.initCloudSync();
-    }
+    await initCloudSync();
     
     // Wait a moment for auth state to be determined
     setTimeout(() => {
         // Only initialize app features if user is authenticated
-        if (window.GolfAuth && window.GolfAuth.isAuthenticated()) {
+        if (isAuthenticated()) {
             initAppFeatures();
         }
     }, 1000);
